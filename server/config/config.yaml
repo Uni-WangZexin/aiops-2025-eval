@@ -1,0 +1,8 @@
+model_name: paraphrase-multilingual-MiniLM-L12-v2
+location_penalty: 0.1 
+anomaly_type_threshold: 0.6
+path_threshold: 10
+
+anomaly_type_weight: 0.5
+location_weight: 0.5
+path_weight: 0

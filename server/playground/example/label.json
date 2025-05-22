@@ -1,0 +1,22 @@
+[
+    {
+        "fault_category": "network attack",
+        "fault_type": "network delay",
+        "instance_type": "service",
+        "instance": "",
+        "source": "checkoutservice",
+        "destination": "currencyservice",
+        "start_time": "2025-05-05T10:11:31Z",
+        "end_time": "2025-05-05T10:29:31Z"
+    },
+    {
+        "fault_category": "jvm fault",
+        "fault_type": "jvm gc",
+        "instance_type": "service",
+        "instance": "adservice",
+        "source": "",
+        "destination": "",
+        "start_time": "2025-05-05T11:11:33Z",
+        "end_time": "2025-05-05T11:35:33Z"
+    }
+]
