@@ -317,6 +317,7 @@ if __name__ == "__main__":
     parser.add_argument("-l", "--label_file", type=str, default="label.json")
     parser.add_argument("-a", "--answer_file", type=str, default="answer.json")
     parser.add_argument("-r", "--result_file", type=str, default="result.json")
+    parser.add_argument("--diff_type", action="store_true", default=False, help="If set, use eval_diff_type instead of eval.")
 
     args = parser.parse_args()
 
@@ -327,7 +328,10 @@ if __name__ == "__main__":
     label = read_json(label_file)
     answer = read_json(answer_file)
 
-    result = eval(answer, label)
+    if args.diff_type:
+        result = eval_diff_type(answer, label)
+    else:
+        result = eval(answer, label)
 
     with open(result_file, "w") as f:
         json.dump(result, f, indent=4)
