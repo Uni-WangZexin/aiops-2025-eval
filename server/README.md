@@ -13,6 +13,7 @@
 conda create -n aiops25 python=3.12.6
 conda activate aiops25
 pip install -r requirements.txt
+export HF_ENDPOINT=https://hf-mirror.com
 ```
 
 ## 评测脚本使用指南
