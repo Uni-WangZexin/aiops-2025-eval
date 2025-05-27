@@ -2,7 +2,7 @@ import os
 import json
 import random
 
-EXAMPLE_DIR = os.path.join(os.path.dirname(__file__), 'playground', 'example2')
+EXAMPLE_DIR = os.path.join(os.path.dirname(__file__), 'playground', 'example')
 TEMPLATES = [
     "A fault occurred from {start_time} to {end_time}. Please identify the root cause.",
     "Please analyze the abnormal event between {start_time} and {end_time} and provide the root cause.",
@@ -26,7 +26,7 @@ def process_label_json(label_path, output_dir):
             'start_time': case['start_time'],
             'end_time': case['end_time']
         })
-    # Save descriptions (optional: descriptions.json)
+    # Save descriptions
     with open(os.path.join(output_dir, 'fault.json'), 'w') as f:
         json.dump(descriptions, f, ensure_ascii=False, indent=4)
 

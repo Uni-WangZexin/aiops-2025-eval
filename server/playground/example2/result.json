@@ -1,0 +1,124 @@
+{
+    "global": {
+        "score": 0.5409,
+        "anomaly_type_score": 0.7927,
+        "location_score": 0.289,
+        "path_score": 0.9843
+    },
+    "type_scores": {
+        "network delay": {
+            "score": 0.2417,
+            "anomaly_type_score": 0.4167,
+            "location_score": 0.0667,
+            "path_score": 0.9841
+        },
+        "jvm gc": {
+            "score": 0.6312,
+            "anomaly_type_score": 1.0,
+            "location_score": 0.2625,
+            "path_score": 0.933
+        },
+        "network corrupt": {
+            "score": 0.5083,
+            "anomaly_type_score": 1.0,
+            "location_score": 0.0167,
+            "path_score": 0.9841
+        },
+        "dns error": {
+            "score": 0.4833,
+            "anomaly_type_score": 0.3333,
+            "location_score": 0.6333,
+            "path_score": 1.0
+        },
+        "memory stress": {
+            "score": 0.9,
+            "anomaly_type_score": 1.0,
+            "location_score": 0.8,
+            "path_score": 1.0
+        },
+        "pod failure": {
+            "score": 0.5,
+            "anomaly_type_score": 1.0,
+            "location_score": 0,
+            "path_score": 0.9698
+        },
+        "node cpu": {
+            "score": 0.225,
+            "anomaly_type_score": 0,
+            "location_score": 0.45,
+            "path_score": 1.0
+        },
+        "jvm cpu": {
+            "score": 0.6545,
+            "anomaly_type_score": 0.5455,
+            "location_score": 0.7636,
+            "path_score": 1.0
+        },
+        "jvm exception": {
+            "score": 0.775,
+            "anomaly_type_score": 1.0,
+            "location_score": 0.55,
+            "path_score": 1.0
+        },
+        "network loss": {
+            "score": 0.5667,
+            "anomaly_type_score": 1.0,
+            "location_score": 0.1333,
+            "path_score": 1.0
+        },
+        "cpu stress": {
+            "score": 0.9,
+            "anomaly_type_score": 1.0,
+            "location_score": 0.8,
+            "path_score": 1.0
+        },
+        "pod kill": {
+            "score": 0.65,
+            "anomaly_type_score": 0.8,
+            "location_score": 0.5,
+            "path_score": 0.981
+        },
+        "jvm latency": {
+            "score": 0.625,
+            "anomaly_type_score": 1.0,
+            "location_score": 0.25,
+            "path_score": 1.0
+        },
+        "target port misconfig": {
+            "score": 0.5,
+            "anomaly_type_score": 1.0,
+            "location_score": 0,
+            "path_score": 1.0
+        },
+        "node disk fill": {
+            "score": 0.5,
+            "anomaly_type_score": 1.0,
+            "location_score": 0,
+            "path_score": 0.9524
+        },
+        "code error": {
+            "score": 0.9,
+            "anomaly_type_score": 1.0,
+            "location_score": 0.8,
+            "path_score": 1.0
+        },
+        "node network loss": {
+            "score": 0.5,
+            "anomaly_type_score": 1.0,
+            "location_score": 0,
+            "path_score": 0.9683
+        },
+        "node network delay": {
+            "score": 0.5,
+            "anomaly_type_score": 1.0,
+            "location_score": 0,
+            "path_score": 1.0
+        },
+        "node memory": {
+            "score": 0.5,
+            "anomaly_type_score": 1.0,
+            "location_score": 0,
+            "path_score": 1.0
+        }
+    }
+}
