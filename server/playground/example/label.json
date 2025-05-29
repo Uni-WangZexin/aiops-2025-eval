@@ -7,7 +7,8 @@
         "source": "checkoutservice",
         "destination": "currencyservice",
         "start_time": "2025-05-05T10:11:31Z",
-        "end_time": "2025-05-05T10:29:31Z"
+        "end_time": "2025-05-05T10:29:31Z",
+        "key_observations": ["match_sop", "xxxx"]
     },
     {
         "fault_category": "jvm fault",
@@ -17,6 +18,7 @@
         "source": "",
         "destination": "",
         "start_time": "2025-05-05T11:11:33Z",
-        "end_time": "2025-05-05T11:35:33Z"
+        "end_time": "2025-05-05T11:35:33Z",
+        "key_observations": ["match_sop", "xxxx"]
     }
 ]

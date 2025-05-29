@@ -13,7 +13,6 @@
 conda create -n aiops25 python=3.12.6
 conda activate aiops25
 pip install -r requirements.txt
-export HF_ENDPOINT=https://hf-mirror.com
 ```
 
 ## 评测脚本使用指南
@@ -43,6 +42,7 @@ python eval.py -d playground/example
 * `-l, --label_file`：参考答案文件的路径。默认为 `label.json`。
 * `-a, --answer_file`：模型生成答案文件的路径。默认为 `answer.json`。
 * `-r, --result_file`：评测结果将保存在此 JSON 格式的文件中。默认为 `result.json`。
+* `--diff_type`：是否针对不同类型的故障分别评估，默认为 `False`。
 
 
 ### 文件格式
@@ -105,14 +105,15 @@ python eval.py -d playground/example
         "source": "checkoutservice",
         "destination": "currencyservice",
         "start_time": "2025-05-05T10:11:31Z",
-        "end_time": "2025-05-05T10:29:31Z"
+        "end_time": "2025-05-05T10:29:31Z",
+        "key_observations":["xxx"]
     }
 ]
 ```
 
 ## 评分方式
 
-我们的评分机制综合考虑了**根因位置准确性**，**根因类型准确率**和**推理效率**三个层面。
+我们的评分机制综合考虑了**根因位置准确性**，**根因类型准确率**，**推理效率**和**推理链条合理性**四个层面。
 
 ### 根因位置准确性
 
@@ -158,6 +159,12 @@ for fault in faults:
     path_score += min(exp(-(path_length - 10) / 10), 1)
 path_score = path_score / [故障数目]
 ```
+
+### 推理链条合理性
+
+这个部分，我们重点关注推理链条的合理性。
+
+我们对于每个故障，都有一些关键的定位信息。具体评估过程中，利用关键词匹配的方式，计算推理步骤中，是否包含了关键的定位信息。
 
 ### 提交得分
 

@@ -1,6 +1,25 @@
 {
-    "score": 0.275,
-    "anomaly_type_score": 0.5,
-    "location_score": 0.05,
-    "path_score": 0.8704
+    "global": {
+        "score": 0.55,
+        "anomaly_type_score": 1.0,
+        "location_score": 0.1,
+        "path_score": 0.6363,
+        "reasoning_trace_score": 0.5
+    },
+    "type_scores": {
+        "network delay": {
+            "score": 0.5,
+            "anomaly_type_score": 1.0,
+            "location_score": 0,
+            "path_score": 1.0,
+            "reasoning_trace_score": 0.5
+        },
+        "jvm gc": {
+            "score": 0.85,
+            "anomaly_type_score": 1.0,
+            "location_score": 0.7,
+            "path_score": 0.2725,
+            "reasoning_trace_score": 0.5
+        }
+    }
 }

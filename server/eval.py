@@ -1,5 +1,6 @@
 import json
 import os
+import trace
 import numpy as np
 from scipy.spatial.distance import cosine
 from config.config import config, model
@@ -127,6 +128,25 @@ def check_anomaly_type(
         return 0
 
 
+def check_reasoning_trace(reasoning_trace_str: str, key_observations: list) -> float:
+    """
+    Check the reasoning trace for key observations and calculate a score.
+    Args:
+        reasoningtrace_str (str): String representation of the reasoning trace.
+        key_observations (list): List of key observations.
+    Returns:
+        float: Score based on the number of key observations found in the reasoning trace.
+    """
+    # Ensure input is string type
+    reasoning_trace_str = str(reasoning_trace_str).lower()
+
+    hit_cnt = 0
+    for obs in key_observations:
+        if obs.lower() in reasoning_trace_str:
+            hit_cnt += 1
+    return round(hit_cnt / len(key_observations), 4) if len(key_observations) else 0
+
+
 def eval(answer: list, label: list) -> dict:
     """
     Evaluate the prediction results against the ground truth labels.
@@ -144,6 +164,7 @@ def eval(answer: list, label: list) -> dict:
     location_score = 0
     path_score = 0
     anomaly_type_score = 0
+    reasoning_trace_score = 0
     all_rc_num = 0
 
     for pred, gt in zip(answer, label):
@@ -166,6 +187,18 @@ def eval(answer: list, label: list) -> dict:
                 location_score -= location_penalty
         # Anomaly type score
         anomaly_type_score += check_anomaly_type(pred["anomaly type"], gt["fault_type"])
+
+        reasoning_trace_str = "\n".join(
+            [
+                trace["action"] + "\n" + trace["observation"]
+                for trace in pred.get("reasoning trace", [])
+            ]
+        )
+        key_observations = gt["key_observations"] if "key_observations" in gt else []
+        reasoning_trace_score += check_reasoning_trace(
+            reasoning_trace_str, key_observations
+        )
+
     location_score = location_score if location_score > 0 else 0
     location_score = location_score / all_rc_num if all_rc_num else 0
 
@@ -173,21 +206,25 @@ def eval(answer: list, label: list) -> dict:
     path_score = path_score / len(answer) if len(answer) else 0
     # Calculate path score using the new formula
     anomaly_type_score = anomaly_type_score / len(answer) if len(answer) else 0
+    reasoning_trace_score = reasoning_trace_score / len(answer) if len(answer) else 0
 
     anomaly_type_weight = config.get("anomaly_type_weight", 0.5)
     location_weight = config.get("location_weight", 0.5)
     path_weight = config.get("path_weight", 0)
+    reasoning_trace_weight = config.get("reasoning_trace_weight", 0)
 
     score = (
         anomaly_type_weight * anomaly_type_score
         + location_weight * location_score
         + path_weight * path_score
+        + reasoning_trace_weight * reasoning_trace_score
     )
     return {
         "score": round(score, 4),
         "anomaly_type_score": round(anomaly_type_score, 4),
         "location_score": round(location_score, 4),
         "path_score": round(path_score, 4),
+        "reasoning_trace_score": round(reasoning_trace_score, 4),
     }
 
 
@@ -201,11 +238,13 @@ def eval_diff_type(answer: list, label: list) -> dict:
     anomaly_type_weight = config.get("anomaly_type_weight", 0.5)
     location_weight = config.get("location_weight", 0.5)
     path_weight = config.get("path_weight", 0)
+    reasoning_trace_weight = config.get("reasoning_trace_weight", 0)
 
     # Global statistics
     total_location_score = 0
     total_path_score = 0
     total_anomaly_type_score = 0
+    total_reasoning_trace_score = 0
     total_rc_num = 0
     total_count = 0
 
@@ -220,6 +259,7 @@ def eval_diff_type(answer: list, label: list) -> dict:
                 "rc_num": 0,
                 "path_score": 0,
                 "anomaly_type_score": 0,
+                "reasoning_trace_score": 0,
                 "count": 0,
             }
         # Ground truth root cause
@@ -258,6 +298,20 @@ def eval_diff_type(answer: list, label: list) -> dict:
         type_stats[fault_type]["anomaly_type_score"] += anomaly_type_correct
         total_anomaly_type_score += anomaly_type_correct
 
+        # reasoning_trace_score
+        reasoning_trace_str = "\n".join(
+            [
+                trace["action"] + "\n" + trace["observation"]
+                for trace in pred.get("reasoning trace", [])
+            ]
+        )
+        key_observations = gt["key_observations"] if "key_observations" in gt else []
+        current_reasoning_trace_score = check_reasoning_trace(
+            reasoning_trace_str, key_observations
+        )
+        type_stats[fault_type]["reasoning_trace_score"] += current_reasoning_trace_score
+        total_reasoning_trace_score += current_reasoning_trace_score
+
         type_stats[fault_type]["count"] += 1
         total_count += 1
 
@@ -267,10 +321,14 @@ def eval_diff_type(answer: list, label: list) -> dict:
     )
     global_location_score = total_location_score / total_rc_num if total_rc_num else 0
     global_path_score = total_path_score / total_count if total_count else 0
+    global_reasoning_trace_score = (
+        total_reasoning_trace_score / total_count if total_count else 0
+    )
     global_score = (
         anomaly_type_weight * global_anomaly_type_score
         + location_weight * global_location_score
         + path_weight * global_path_score
+        + reasoning_trace_weight * global_reasoning_trace_score
     )
 
     result = {
@@ -279,6 +337,7 @@ def eval_diff_type(answer: list, label: list) -> dict:
             "anomaly_type_score": round(global_anomaly_type_score, 4),
             "location_score": round(global_location_score, 4),
             "path_score": round(global_path_score, 4),
+            "reasoning_trace_score": round(global_reasoning_trace_score, 4),
         },
         "type_scores": {},
     }
@@ -291,21 +350,27 @@ def eval_diff_type(answer: list, label: list) -> dict:
             stats["location_score"] / stats["rc_num"] if stats["rc_num"] else 0
         )
         path_score = stats["path_score"] / stats["count"] if stats["count"] else 0
+        reasoning_trace_score_for_type = (
+            stats["reasoning_trace_score"] / stats["count"] if stats["count"] else 0
+        )
 
         anomaly_type_score = anomaly_type_score if anomaly_type_score > 0 else 0
         location_score = location_score if location_score > 0 else 0
         path_score = path_score if path_score > 0 else 0
+        # reasoning_trace_score_for_type already positive or zero
 
         score = (
             anomaly_type_weight * anomaly_type_score
             + location_weight * location_score
             + path_weight * path_score
+            + reasoning_trace_weight * reasoning_trace_score_for_type
         )
         result["type_scores"][t] = {
             "score": round(score, 4),
             "anomaly_type_score": round(anomaly_type_score, 4),
             "location_score": round(location_score, 4),
             "path_score": round(path_score, 4),
+            "reasoning_trace_score": round(reasoning_trace_score_for_type, 4),
         }
 
     return result
@@ -317,7 +382,12 @@ if __name__ == "__main__":
     parser.add_argument("-l", "--label_file", type=str, default="label.json")
     parser.add_argument("-a", "--answer_file", type=str, default="answer.json")
     parser.add_argument("-r", "--result_file", type=str, default="result.json")
-    parser.add_argument("--diff_type", action="store_true", default=False, help="If set, use eval_diff_type instead of eval.")
+    parser.add_argument(
+        "--diff_type",
+        action="store_true",
+        default=False,
+        help="If set, use eval_diff_type instead of eval.",
+    )
 
     args = parser.parse_args()
 

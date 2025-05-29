@@ -6,3 +6,4 @@ path_threshold: 10
 anomaly_type_weight: 0.5
 location_weight: 0.5
 path_weight: 0
+reasoning_trace_weight: 0
