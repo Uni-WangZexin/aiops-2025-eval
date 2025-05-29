@@ -40,6 +40,9 @@ def parse_predict_root_cause(predict_root_cause):
         "shippingservice",
         "emailservice",
         "paymentservice",
+        "tidb-pd",
+        "tidb-tidb",
+        "tidb-tikv"
     ]
     all_node = [
         "aiops-k8s-01",
@@ -82,6 +85,9 @@ def parse_predict_root_cause(predict_root_cause):
         "paymentservice-0",
         "paymentservice-1",
         "paymentservice-2",
+        "tidb-pd-0",
+        "tidb-tidb-0",
+        "tidb-tikv-0"
     ]
     parsed_rc = []
     for rc in predict_root_cause:
