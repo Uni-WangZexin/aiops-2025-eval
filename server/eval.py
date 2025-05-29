@@ -175,7 +175,7 @@ def eval(answer: list, label: list) -> dict:
         # Predicted root cause
         predict_rc = pred["root cause"]
         predict_rc = [item["location"].lower() for item in predict_rc]
-        predict_rc = parse_predict_root_cause(predict_rc)
+        # predict_rc = parse_predict_root_cause(predict_rc)
         all_rc_num += len(ground_truth_rc)
         path_score += min(
             math.exp(-(pred.get("path length", 0) - path_threshold) / path_threshold), 1
@@ -269,7 +269,7 @@ def eval_diff_type(answer: list, label: list) -> dict:
         # Predicted root cause
         predict_rc = pred["root cause"]
         predict_rc = [item["location"].lower() for item in predict_rc]
-        predict_rc = parse_predict_root_cause(predict_rc)
+        # predict_rc = parse_predict_root_cause(predict_rc)
         rc_num = len(ground_truth_rc)
         type_stats[fault_type]["rc_num"] += rc_num
         total_rc_num += rc_num
