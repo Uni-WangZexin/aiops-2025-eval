@@ -106,7 +106,7 @@ python eval.py -d playground/example
         "destination": "currencyservice",
         "start_time": "2025-05-05T10:11:31Z",
         "end_time": "2025-05-05T10:29:31Z",
-        "key_observations":["xxx"]
+        "key_observations":[{"type": "metric", "keyword":["xxx"]}, {"type": "log", "keyword":["xxx"]}, {"type": "trace", "keyword":["xxx"]}]
     }
 ]
 ```
@@ -165,6 +165,12 @@ path_score = path_score / [故障数目]
 这个部分，我们重点关注推理链条的合理性。
 
 我们对于每个故障，都有一些关键的定位信息。具体评估过程中，利用关键词匹配的方式，计算推理步骤中，是否包含了关键的定位信息。
+
+具体来说，每个故障的标签包含三类关键信息：
+* metric 关键信息：包含一些关键的指标名字。
+* log 关键信息：包含一些关键的日志中的关键词，如error等。
+* trace 关键信息，包含关键的一些调用链条中的故障实例。
+
 
 ### 提交得分
 
