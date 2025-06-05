@@ -4,7 +4,7 @@
         "anomaly_type_score": 1.0,
         "location_score": 0.1,
         "path_score": 0.6363,
-        "reasoning_trace_score": 0.5
+        "reasoning_trace_score": 0.25
     },
     "type_scores": {
         "network delay": {
@@ -12,14 +12,14 @@
             "anomaly_type_score": 1.0,
             "location_score": 0,
             "path_score": 1.0,
-            "reasoning_trace_score": 0.5
+            "reasoning_trace_score": 0.0833
         },
         "jvm gc": {
             "score": 0.85,
             "anomaly_type_score": 1.0,
             "location_score": 0.7,
             "path_score": 0.2725,
-            "reasoning_trace_score": 0.5
+            "reasoning_trace_score": 0.4167
         }
     }
 }

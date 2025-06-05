@@ -134,6 +134,24 @@ def check_anomaly_type(
         return 0
 
 
+# def check_reasoning_trace(reasoning_trace_str: str, key_observations: list) -> float:
+#     """
+#     Check the reasoning trace for key observations and calculate a score.
+#     Args:
+#         reasoningtrace_str (str): String representation of the reasoning trace.
+#         key_observations (list): List of key observations.
+#     Returns:
+#         float: Score based on the number of key observations found in the reasoning trace.
+#     """
+#     # Ensure input is string type
+#     reasoning_trace_str = str(reasoning_trace_str).lower()
+
+#     hit_cnt = 0
+#     for obs in key_observations:
+#         if obs.lower() in reasoning_trace_str:
+#             hit_cnt += 1
+#     return round(hit_cnt / len(key_observations), 4) if len(key_observations) else 0
+
 def check_reasoning_trace(reasoning_trace_str: str, key_observations: list) -> float:
     """
     Check the reasoning trace for key observations and calculate a score.
@@ -148,8 +166,23 @@ def check_reasoning_trace(reasoning_trace_str: str, key_observations: list) -> f
 
     hit_cnt = 0
     for obs in key_observations:
-        if obs.lower() in reasoning_trace_str:
-            hit_cnt += 1
+        if obs['type'] == 'metric':
+            for metric_keyword in obs['keyword']:
+                if metric_keyword.lower() in reasoning_trace_str:
+                    hit_cnt += 1
+                    break
+        elif obs['type'] == 'log':
+            hit_score = 1 / len(obs['keyword']) if len(obs['keyword']) > 0 else 0
+            for log_keyword in obs['keyword']:
+                if log_keyword.lower() in reasoning_trace_str:
+                    hit_cnt += hit_score
+        elif obs['type'] == 'trace':
+            hit_score = 1 / len(obs['keyword']) if len(obs['keyword']) > 0 else 0
+            for trace_keyword in obs['keyword']:
+                if trace_keyword.lower() in reasoning_trace_str:
+                    hit_cnt += hit_score
+        else:
+            raise ValueError(f"Unknown observation type: {obs['type']}")
     return round(hit_cnt / len(key_observations), 4) if len(key_observations) else 0
 
 

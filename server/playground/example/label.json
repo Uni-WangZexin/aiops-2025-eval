@@ -8,7 +8,32 @@
         "destination": "currencyservice",
         "start_time": "2025-05-05T10:11:31Z",
         "end_time": "2025-05-05T10:29:31Z",
-        "key_observations": ["match_sop", "xxxx"]
+        "key_observations": [
+            {
+                "type": "metric",
+                "keyword": [
+                    "rrt"
+                ]
+            },
+            {
+                "type": "log",
+                "keyword": [
+                    "misbehaving",
+                    "unavailable",
+                    "error",
+                    "failed"
+                ]
+            },
+            {
+                "type": "trace",
+                "subtype": "latency_anomalies",
+                "keyword": [
+                    "checkoutservice-0",
+                    "checkoutservice-2",
+                    "frontend-2"
+                ]
+            }
+        ]
     },
     {
         "fault_category": "jvm fault",
@@ -19,6 +44,31 @@
         "destination": "",
         "start_time": "2025-05-05T11:11:33Z",
         "end_time": "2025-05-05T11:35:33Z",
-        "key_observations": ["match_sop", "xxxx"]
+        "key_observations": [
+            {
+                "type": "metric",
+                "keyword": [
+                    "rrt"
+                ]
+            },
+            {
+                "type": "log",
+                "keyword": [
+                    "misbehaving",
+                    "unavailable",
+                    "error",
+                    "failed"
+                ]
+            },
+            {
+                "type": "trace",
+                "subtype": "latency_anomalies",
+                "keyword": [
+                    "checkoutservice-0",
+                    "checkoutservice-2",
+                    "frontend-2"
+                ]
+            }
+        ]
     }
 ]
