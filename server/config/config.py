@@ -1,6 +1,7 @@
 import os
 import yaml
 from sentence_transformers import SentenceTransformer
+import torch
 
 CONFIG_PATH = os.getenv("CONFIG_PATH", "config/config.yaml")
 
@@ -17,6 +18,7 @@ def load_config():
 
 config = load_config()
 
+device = "cuda" if torch.cuda.is_available() else "cpu"
 model = SentenceTransformer(
-    config.get("model_name", "paraphrase-multilingual-MiniLM-L12-v2")
+    config.get("model_name", "paraphrase-multilingual-MiniLM-L12-v2"), device=device
 )

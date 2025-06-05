@@ -12,6 +12,7 @@
 ```bash
 conda create -n aiops25 python=3.12.6
 conda activate aiops25
+pip install torch==2.6.0+cu126 --index-url https://download.pytorch.org/whl/cu126
 pip install -r requirements.txt
 ```
 
